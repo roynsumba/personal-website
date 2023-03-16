@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Vertical Scrolling Page with Sticky Navbar</title>
+    <title>Vertical Scrolling Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
     />
     <style>
       .section {
@@ -28,109 +30,166 @@
       }
 
       .navbar {
-        position: absolute;
+        position: fixed;
         top: 0;
         height: 80px;
         width: 100%;
         z-index: 1000;
       }
 
-      .navbar-section1 {
-        top: calc(5%);
+      .navbar,
+      .navbar-brand,
+      .nav-link {
+        color: white !important;
       }
 
-      .ml-auto {
-        margin-left: auto;
+      .custom-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+      }
+
+      .offcanvas .offcanvas-title {
+        color: white;
+      }
+
+      .custom-offcanvas-width {
+        width: 40% !important; /* Adjust the percentage as per your preference */
       }
     </style>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div id="section1" class="section section1">
-      <nav
-        class="navbar navbar-expand-lg navbar-light bg-light navbar-section1"
-      >
-        <a class="navbar-brand" href="#">My Website</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#section2">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
+      <nav class="navbar navbar-expand-md">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">My Website</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasNav"
+            aria-controls="offcanvasNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon custom-toggler-icon"></span>
+          </button>
+          <div
+            class="offcanvas offcanvas-end custom-offcanvas-width"
+            data-bs-scroll="true"
+            tabindex="-1"
+            id="offcanvasNav"
+            aria-labelledby="offcanvasNavLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavLabel">Navigation</h5>
+              <button
+                type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="#section1" id="home-link">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#section2" id="about-link">About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#section3" id="contact-link"
+                    >Contact</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </nav>
     </div>
-    <div id="section2" class="section section2">Section 2</div>
-    <div id="section3" class="section section3">Section 3</div>
+    <div id="section2" class="section section2"></div>
+    <div id="section3" class="section section3"></div>
 
-    <!-- Your existing JavaScript code -->
     <script>
-      // Get the three section elements
       var section1 = document.getElementById("section1");
       var section2 = document.getElementById("section2");
       var section3 = document.getElementById("section3");
 
-      // Set the initial scroll position to the top of the first section
-      window.scrollTo(0, section1.offsetTop);
+      var homeLink = document.getElementById("home-link");
+      var aboutLink = document.getElementById("about-link");
+      var contactLink = document.getElementById("contact-link");
 
-      // Add a scroll event listener to the window
-      window.addEventListener("scroll", function () {
-        // Check which section is currently in view and update the URL hash accordingly
-        if (isElementInViewport(section1)) {
-          window.location.hash = "#section1";
-        } else if (isElementInViewport(section2)) {
-          window.location.hash = "#section2";
-        } else if (isElementInViewport(section3)) {
-          window.location.hash = "#section3";
-        }
-      });
-
-      // Helper function to check if an element is currently in the viewport
       function isElementInViewport(element) {
         var rect = element.getBoundingClientRect();
         return (
-          rect.top >= 0 &&
-          rect.left >= 0 &&
-          rect.bottom <=
+          rect.top <
             (window.innerHeight || document.documentElement.clientHeight) &&
-          rect.right <=
-            (window.innerWidth || document.documentElement.clientWidth)
+          rect.bottom > 0
         );
       }
 
-      // Get the navbar element
-      var navbar = document.querySelector(".navbar");
+      function updateNavbar() {
+        var navbar = document.querySelector(".navbar");
 
-      // Add a scroll event listener to the window
-      window.addEventListener("scroll", function () {
-        // Get the bottom position of section1
-        var section1Bottom = section1.offsetTop + section1.offsetHeight;
+        if (isElementInViewport(section1)) {
+          navbar.style.backgroundColor =
+            window.getComputedStyle(section1).backgroundColor;
 
-        // Check if the user has scrolled past the bottom of section1
-        if (window.scrollY >= section1Bottom) {
-          // Remove the sticky-top class from the navbar
-          navbar.classList.remove("sticky-top");
-        } else {
-          // Add the sticky-top class to the navbar
-          navbar.classList.add("sticky-top");
+          var scrolledToTopOfSection1 =
+            window.pageYOffset <= section1.offsetTop + navbar.offsetHeight;
+
+          if (scrolledToTopOfSection1) {
+            homeLink.style.display = "block";
+            aboutLink.style.display = "block";
+            contactLink.style.display = "block";
+          } else {
+            homeLink.style.display = "block";
+            aboutLink.style.display = "none";
+            contactLink.style.display = "none";
+          }
+        } else if (isElementInViewport(section2)) {
+          navbar.style.backgroundColor =
+            window.getComputedStyle(section2).backgroundColor;
+          homeLink.style.display = "none";
+          aboutLink.style.display = "block";
+          contactLink.style.display = "none";
+        } else if (isElementInViewport(section3)) {
+          navbar.style.backgroundColor =
+            window.getComputedStyle(section3).backgroundColor;
+          homeLink.style.display = "none";
+          aboutLink.style.display = "none";
+          contactLink.style.display = "block";
         }
-      });
+      }
+
+      function updateOffcanvasBackgroundColor() {
+        var offcanvasNav = document.getElementById("offcanvasNav");
+        var currentSection;
+
+        if (isElementInViewport(section1)) {
+          currentSection = section1;
+        } else if (isElementInViewport(section2)) {
+          currentSection = section2;
+        } else if (isElementInViewport(section3)) {
+          currentSection = section3;
+        }
+
+        if (currentSection) {
+          offcanvasNav.style.backgroundColor =
+            window.getComputedStyle(currentSection).backgroundColor;
+        }
+      }
+
+      window.addEventListener("scroll", updateOffcanvasBackgroundColor);
+      updateOffcanvasBackgroundColor();
+
+      window.addEventListener("scroll", updateNavbar);
+      updateNavbar();
     </script>
   </body>
 </html>
